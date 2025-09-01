@@ -12,7 +12,7 @@ final class TodosListVC: UIViewController {
     private enum UIConastants {
         
     }
-    
+
     private lazy var tableView: UITableView = {
         let table = UITableView()
         table.translatesAutoresizingMaskIntoConstraints = false
