@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class TodosBootomPanelView: UIView {
+final class TodosBootomView: UIView {
     
     enum UIConastants {
         static let panelHeight: CGFloat = 83
@@ -48,6 +48,10 @@ final class TodosBootomPanelView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configure(with tasksCount: Int) {
+        counterLabel.text = "\(tasksCount) задач"
     }
     
     private func configureUI() {

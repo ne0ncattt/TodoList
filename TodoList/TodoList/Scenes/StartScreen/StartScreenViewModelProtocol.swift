@@ -5,7 +5,7 @@
 //  Created by Renat Galiamov on 01.09.2025.
 //
 
-protocol StarsScreenVMProtocol {
+protocol StartScreenViewModelProtocol {
     var didLoadData: ((Result<Void, Error>) -> Void)? { get set }
     func loadData()
 }

@@ -9,7 +9,7 @@ import UIKit
 
 final class StartScreenViewController: UIViewController {
     
-    private var viewModel: StarsScreenVMProtocol
+    private var viewModel: StartScreenViewModelProtocol
     
     private lazy var logoImageView: UIImageView = {
         let imageView = UIImageView()
@@ -27,7 +27,7 @@ final class StartScreenViewController: UIViewController {
     }()
     
     
-    init(viewModel: StarsScreenVMProtocol) {
+    init(viewModel: StartScreenViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -59,8 +59,24 @@ final class StartScreenViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        viewModel.didLoadData = { [weak self] items in
+        viewModel.didLoadData = { [weak self] result in
+            switch result {
+            case .failure(let error):
+                self?.showErrorAlert(error)
+            default:
+                break
+            }
             
         }
+    }
+    
+    private func showErrorAlert(_ error : Error) {
+        let alert = UIAlertController(title: "Ошибка :(",
+                                      message: "Ошибка: \(error.localizedDescription)",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Повторить загрузка", style: .default, handler: { _ in
+            self.viewModel.loadData()
+        }))
+        present(alert, animated: true)
     }
 }

@@ -7,12 +7,9 @@
 
 import UIKit
 
+
 final class TodosViewController: UIViewController {
     
-    private enum UIConastants {
-        
-    }
-
     private lazy var tableView: UITableView = {
         let table = UITableView()
         table.translatesAutoresizingMaskIntoConstraints = false
@@ -20,22 +17,52 @@ final class TodosViewController: UIViewController {
         table.register(TodoCell.self,
                        forCellReuseIdentifier: TodoCell.reuseIdentifier)
         table.separatorStyle = .none
-        table.backgroundColor = .todosScreenBackground
+        table.allowsSelection = false
+        table.backgroundColor = .clear
         return table
     }()
     
-    private lazy var bottomPanel: TodosBootomPanelView = {
-        let view = TodosBootomPanelView()
+    private lazy var bottomPanel: TodosBootomView = {
+        let view = TodosBootomView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     private let searchController = UISearchController(searchResultsController: nil)
     
+    private let viewModel: TodosViewModelProtocol
+    
+    init(viewModel: TodosViewModelProtocol) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .todosScreenBackground
+        setupSearchBar()
         setupUIComponents()
+        bindViewModel()
+        viewModel.loadModel()
+    }
+    
+    private func setupSearchBar() {
+        searchController.searchBar.delegate = self
+        searchController.searchBar.returnKeyType = UIReturnKeyType.done
+    }
+    
+    private func bindViewModel() {
+        viewModel.didLoadNewModel = { [weak self] in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                self.bottomPanel.configure(with: self.viewModel.itemsToDisplay.count)
+            }
+        }
     }
     
     private func setupUIComponents() {
@@ -57,7 +84,7 @@ final class TodosViewController: UIViewController {
         tableView.dataSource = self
         
         NSLayoutConstraint.activate([
-            bottomPanel.heightAnchor.constraint(equalToConstant: TodosBootomPanelView.UIConastants.panelHeight),
+            bottomPanel.heightAnchor.constraint(equalToConstant: TodosBootomView.UIConastants.panelHeight),
             bottomPanel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
             bottomPanel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             bottomPanel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
@@ -70,51 +97,80 @@ final class TodosViewController: UIViewController {
         
         view.bringSubviewToFront(bottomPanel)
     }
-    
-    private lazy var mockData: [TodoItem] = {
-        let mockStrings = ["""
-                          Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                          """,
-                          """
-                          A wonderful serenity has taken possession of my entire soul,
-                          like these sweet mornings of spring which I enjoy with my whole heart. 
-                          """,
-                          """
-                          Lorem ipsum dolor sit amet consectetur adipiscing elit. 
-                          Consectetur adipiscing elit quisque faucibus ex sapien vitae.
-                          Ex sapien vitae pellentesque sem placerat in id. 
-                          Placerat in id cursus mi pretium tellus duis.
-                          Pretium tellus duis convallis tempus leo eu aenean.
-                          """,
-                          """
-                          Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                          """,
-        ]
-        var array = [TodoItem]()
-        for index in 0...200 {
-            array.append(TodoItem(id: Int.random(in: 1...200000),
-                                  decription: mockStrings.randomElement() ?? "",
-                                  isCompleted: Bool.random(),
-                                  userId: 0,
-                                  date: Date()))
-        }
-        return array
-    }()
 }
-
-
 
 extension TodosViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        mockData.count
+        viewModel.itemsToDisplay.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TodoCell.reuseIdentifier,
                                                        for: indexPath) as? TodoCell
         else { return UITableViewCell() }
-        cell.configure(with: mockData[indexPath.row])
+        cell.configure(with: viewModel.itemsToDisplay[indexPath.row])
+        cell.didPressCheckmark = { [weak self] in
+            self?.viewModel.toggleTodoItemCompleteion(at: indexPath.row)
+        }
         return cell
+    }
+    
+    
+}
+
+extension TodosViewController {
+    func tableView(_ tableView: UITableView,
+                   contextMenuConfigurationForRowAt indexPath: IndexPath,
+                   point: CGPoint) -> UIContextMenuConfiguration? {
+        UIContextMenuConfiguration(identifier: indexPath as NSIndexPath) {
+            self.preview(for: indexPath)
+        } actionProvider: { _ in
+            self.menu(for: indexPath)
+        }
+    }
+    
+    private func menu(for indexPath: IndexPath) -> UIMenu {
+        let edit = UIAction(
+            title: "Редактировать",
+            image: UIImage(systemName: "square.and.pencil")) { _ in
+                
+            }
+        
+        let share = UIAction(
+            title: "Поделиться",
+            image: UIImage(systemName: "square.and.arrow.up")) { _ in
+                
+            }
+
+        let delete = UIAction(
+            title: "Удалить",
+            image: UIImage(systemName: "trash"),
+            attributes: .destructive) { _ in
+                self.viewModel.deleteItem(at: indexPath.row)
+            }
+        return UIMenu(title: "", children: [edit, share, delete,])
+    }
+    
+    func preview(for indexPath: IndexPath) -> UIViewController? {
+        // превью будет отличаться от макета, но, думаю, в тестовом задании это будет писать излишне
+        return nil
     }
 }
 
+extension TodosViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        viewModel.filterQuery = searchText
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        viewModel.filterQuery = ""
+    }
+}
+
+extension TodosViewController {
+
+}

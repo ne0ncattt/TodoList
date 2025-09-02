@@ -7,22 +7,19 @@
 
 import Foundation
 
-final class StarsScreenViewModel : StarsScreenVMProtocol {
+final class StartScreenViewModel : StartScreenViewModelProtocol {
     
     var didLoadData: ((Result<Void, Error>) -> Void)?
     
     private let apiService : TodoApiServiceProtocol
     private let todosStorage: TodoItemsRepositoryProtocol
-    
-    var appRouter: AppRouterProtocol?
+    private let appRouter: AppRouterProtocol?
     
     init(apiService : TodoApiServiceProtocol,
-         todosStorage: TodoItemsRepositoryProtocol) {
+         todosStorage: TodoItemsRepositoryProtocol,
+         appRouter: AppRouterProtocol) {
         self.apiService = apiService
         self.todosStorage = todosStorage
-    }
-    
-    func setAppRouter(appRouter: AppRouterProtocol?) {
         self.appRouter = appRouter
     }
     

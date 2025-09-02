@@ -22,19 +22,23 @@ final class AppRouter: AppRouterProtocol {
     }
     
     func goToTasksList() {
+        let todosStorage = TodoItemsRepository()
+        let viewModel = TodosViewModel(todosStorage: todosStorage)
+        let controller = TodosViewController(viewModel: viewModel)
+        let router = TodosRouter(viewController: controller)
+        viewModel.setRouter(router)
         let navVC = UINavigationController()
-        navVC.viewControllers = [TodosViewController()]
+        navVC.viewControllers = [controller]
         window?.rootViewController = navVC
     }
     
     func goToStartScreen() {
         let todoApiService = TodoApiService()
         let todosStorage = TodoItemsRepository()
-        let viewModel = StarsScreenViewModel(apiService: todoApiService,
-                                             todosStorage: todosStorage)
+        let viewModel = StartScreenViewModel(apiService: todoApiService,
+                                             todosStorage: todosStorage,
+                                             appRouter: self)
         let controller = StartScreenViewController(viewModel: viewModel)
-        let router = TodosRouter(viewController: controller)
-        viewModel.setAppRouter(appRouter: self)
         window?.rootViewController = controller
     }
     

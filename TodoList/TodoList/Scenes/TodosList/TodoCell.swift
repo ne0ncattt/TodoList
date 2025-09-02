@@ -22,6 +22,12 @@ final class TodoCell: UITableViewCell {
     
     static let reuseIdentifier = "todoListCellReuseIdentifier"
     
+    var didPressCheckmark : (() -> Void)?
+    
+    var viewToHiglight: UIView {
+        return stackView
+    }
+    
     // MARK: - UI Elements
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
@@ -80,6 +86,9 @@ final class TodoCell: UITableViewCell {
         nameLabel.text = "Задача #\(todoItem.id)"
         nameLabel.strikeThrough(todoItem.isCompleted)
         descriptionLabel.text = todoItem.decription
+        descriptionLabel.textColor = todoItem.isCompleted
+        ? .darkThemeGrey
+        : .darkThemeWhite
         dateLabel.text = formatDate(Date())
         let checkmarkImage: UIImage = todoItem.isCompleted
         ? .checkedTodoItemButton
@@ -93,12 +102,12 @@ final class TodoCell: UITableViewCell {
         descriptionLabel.text = nil
         dateLabel.text = nil
         checkmarkButton.isSelected = false
+        didPressCheckmark = nil
     }
     
     // MARK: - Private Methods
     private func setupUI() {
         contentView.backgroundColor = .todosScreenBackground
-        backgroundColor = .todosBottomPanelBackground
         
         [stackView, checkmarkButton, bottomDivider].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -151,6 +160,6 @@ final class TodoCell: UITableViewCell {
     }
     
     @objc private func checkmarkTapped() {
-        checkmarkButton.isSelected.toggle()
+        didPressCheckmark?()
     }
 }
