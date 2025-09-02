@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private func createInitialController() -> UIViewController {
         let navVC = UINavigationController()
-        navVC.viewControllers = [TodosListVC()]
+        navVC.viewControllers = [TodosViewController()]
         return navVC
     }
     

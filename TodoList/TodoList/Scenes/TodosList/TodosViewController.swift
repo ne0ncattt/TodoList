@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class TodosListVC: UIViewController {
+final class TodosViewController: UIViewController {
     
     private enum UIConastants {
         
@@ -17,8 +17,8 @@ final class TodosListVC: UIViewController {
         let table = UITableView()
         table.translatesAutoresizingMaskIntoConstraints = false
         table.rowHeight = UITableView.automaticDimension
-        table.register(TodoListCell.self,
-                       forCellReuseIdentifier: TodoListCell.reuseIdentifier)
+        table.register(TodoCell.self,
+                       forCellReuseIdentifier: TodoCell.reuseIdentifier)
         table.separatorStyle = .none
         table.backgroundColor = .todosScreenBackground
         return table
@@ -95,7 +95,8 @@ final class TodosListVC: UIViewController {
             array.append(TodoItem(id: Int.random(in: 1...200000),
                                   todo: mockStrings.randomElement() ?? "",
                                   completed: Bool.random(),
-                                  userId: 0))
+                                  userId: 0,
+                                  date: Date()))
         }
         return array
     }()
@@ -103,14 +104,14 @@ final class TodosListVC: UIViewController {
 
 
 
-extension TodosListVC: UITableViewDelegate, UITableViewDataSource {
+extension TodosViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         mockData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TodoListCell.reuseIdentifier,
-                                                       for: indexPath) as? TodoListCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TodoCell.reuseIdentifier,
+                                                       for: indexPath) as? TodoCell
         else { return UITableViewCell() }
         cell.configure(with: mockData[indexPath.row])
         return cell

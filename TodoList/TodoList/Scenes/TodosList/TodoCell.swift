@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class TodoListCell: UITableViewCell {
+final class TodoCell: UITableViewCell {
     
     private enum UIConstants {
         static let nameLabelFont: UIFont = .systemFont(ofSize: 16, weight: .medium)
@@ -116,20 +116,20 @@ final class TodoListCell: UITableViewCell {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             checkmarkButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
-                                                   constant: UIConstants.horizontalPadding),
+                                                     constant: UIConstants.horizontalPadding),
             checkmarkButton.topAnchor.constraint(equalTo: contentView.topAnchor,
-                                               constant: UIConstants.verticalPadding),
+                                                 constant: UIConstants.verticalPadding),
             checkmarkButton.widthAnchor.constraint(equalToConstant: UIConstants.checkmarkSize),
             checkmarkButton.heightAnchor.constraint(equalToConstant: UIConstants.checkmarkSize),
             
             stackView.leadingAnchor.constraint(equalTo: checkmarkButton.trailingAnchor,
-                                             constant: UIConstants.horizontalPadding),
+                                               constant: UIConstants.horizontalPadding),
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
-                                              constant: -UIConstants.horizontalPadding),
+                                                constant: -UIConstants.horizontalPadding),
             stackView.topAnchor.constraint(equalTo: contentView.topAnchor,
-                                         constant: UIConstants.verticalPadding),
+                                           constant: UIConstants.verticalPadding),
             stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
-                                            constant: -UIConstants.verticalPadding),
+                                              constant: -UIConstants.verticalPadding),
             
             bottomDivider.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             bottomDivider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
