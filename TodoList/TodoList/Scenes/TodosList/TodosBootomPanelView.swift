@@ -7,12 +7,12 @@
 
 import UIKit
 
-final class BootomPanelView: UIView {
+final class TodosBootomPanelView: UIView {
     
     enum UIConastants {
         static let panelHeight: CGFloat = 83
         static let counterTextFont: UIFont = .systemFont(ofSize: 11)
-        static let createButtonSize: CGFloat = 20
+        static let createButtonSize: CGSize = .init(width: 68, height: 44)
     }
     
     private lazy var panelTopDivider: UIView = {
@@ -67,13 +67,13 @@ final class BootomPanelView: UIView {
             panelTopDivider.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
             panelTopDivider.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
             
-            counterLabel.topAnchor.constraint(equalTo: topAnchor, constant: UIConastants.createButtonSize),
+            counterLabel.topAnchor.constraint(equalTo: topAnchor, constant: 12),
             counterLabel.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 0),
             
             createButton.centerYAnchor.constraint(equalTo: counterLabel.centerYAnchor, constant: 0),
             createButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
-            createButton.heightAnchor.constraint(equalToConstant: 44),
-            createButton.widthAnchor.constraint(equalToConstant: 68),
+            createButton.heightAnchor.constraint(equalToConstant: UIConastants.createButtonSize.height),
+            createButton.widthAnchor.constraint(equalToConstant: UIConastants.createButtonSize.width),
         ])
     }
 }

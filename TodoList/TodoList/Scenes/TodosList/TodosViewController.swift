@@ -24,8 +24,8 @@ final class TodosViewController: UIViewController {
         return table
     }()
     
-    private lazy var bottomPanel: BootomPanelView = {
-        let view = BootomPanelView()
+    private lazy var bottomPanel: TodosBootomPanelView = {
+        let view = TodosBootomPanelView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -57,7 +57,7 @@ final class TodosViewController: UIViewController {
         tableView.dataSource = self
         
         NSLayoutConstraint.activate([
-            bottomPanel.heightAnchor.constraint(equalToConstant: BootomPanelView.UIConastants.panelHeight),
+            bottomPanel.heightAnchor.constraint(equalToConstant: TodosBootomPanelView.UIConastants.panelHeight),
             bottomPanel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
             bottomPanel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             bottomPanel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
