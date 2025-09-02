@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol TodoItemRepository {
+protocol TodoItemsRepositoryProtocol {
     var itemsDidChange: (([TodoItem]) -> Void)? { get set }
     func fetchAllItems() -> [TodoItem]
     func fetchItem(by id: Int) -> TodoItem?

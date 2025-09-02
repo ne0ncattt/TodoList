@@ -7,7 +7,7 @@
 
 import CoreData
 
-final class TodoItemDataManager: TodoItemRepository {
+final class TodoItemsRepository: TodoItemsRepositoryProtocol {
     
     // MARK: - Properties
     
