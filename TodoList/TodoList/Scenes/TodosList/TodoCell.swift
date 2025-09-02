@@ -78,10 +78,10 @@ final class TodoCell: UITableViewCell {
     // MARK: - Public Methods
     func configure(with todoItem: TodoItem) {
         nameLabel.text = "Задача #\(todoItem.id)"
-        nameLabel.strikeThrough(todoItem.completed)
-        descriptionLabel.text = todoItem.todo
+        nameLabel.strikeThrough(todoItem.isCompleted)
+        descriptionLabel.text = todoItem.decription
         dateLabel.text = formatDate(Date())
-        let checkmarkImage: UIImage = todoItem.completed
+        let checkmarkImage: UIImage = todoItem.isCompleted
         ? .checkedTodoItemButton
         : .uncheckedTodoItemButton
         checkmarkButton.setImage(checkmarkImage, for: .normal)

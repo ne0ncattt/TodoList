@@ -4,8 +4,9 @@
 //
 //  Created by Renat Galiamov on 01.09.2025.
 //
+import Foundation
 
-final class TodoApiService {
+final class TodoApiService: TodoApiServiceProtocol {
     private let networkService: NetworkServiceProtocol
     
     init(networkService: NetworkServiceProtocol = NetworkService(baseURL: "https://dummyjson.com")) {

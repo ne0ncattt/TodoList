@@ -8,9 +8,17 @@
 import Foundation
 
 struct TodoItem: Codable {
+    
     let id: Int
-    let todo: String
-    let completed: Bool
+    let decription: String
+    let isCompleted: Bool
     let userId: Int
-    let date: Date
+    var date: Date?
+    
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case decription = "todo"
+        case isCompleted = "completed"
+        case userId
+    }
 }

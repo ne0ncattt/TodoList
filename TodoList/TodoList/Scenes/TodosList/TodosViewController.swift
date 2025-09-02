@@ -93,8 +93,8 @@ final class TodosViewController: UIViewController {
         var array = [TodoItem]()
         for index in 0...200 {
             array.append(TodoItem(id: Int.random(in: 1...200000),
-                                  todo: mockStrings.randomElement() ?? "",
-                                  completed: Bool.random(),
+                                  decription: mockStrings.randomElement() ?? "",
+                                  isCompleted: Bool.random(),
                                   userId: 0,
                                   date: Date()))
         }

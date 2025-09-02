@@ -83,8 +83,8 @@ final class TodoItemDataManager: TodoItemRepository {
             
             do {
                 if let entity = try context.fetch(request).first {
-                    entity.todo = item.todo
-                    entity.completed = item.completed
+                    entity.itemDescripion = item.decription
+                    entity.isCompleted = item.isCompleted
                     entity.userId = Int64(item.userId)
                     
                     self.saveContext(context) {
@@ -135,7 +135,7 @@ final class TodoItemDataManager: TodoItemRepository {
             
             do {
                 if let entity = try context.fetch(request).first {
-                    entity.completed.toggle()
+                    entity.isCompleted.toggle()
                     
                     self.saveContext(context) {
                         self.notifyItemsChanged()

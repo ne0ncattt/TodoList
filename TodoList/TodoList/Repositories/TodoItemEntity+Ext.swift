@@ -11,8 +11,8 @@ extension TodoItemEntity {
     convenience init(context: NSManagedObjectContext, todoItem: TodoItem) {
         self.init(context: context)
         self.id = Int64(todoItem.id)
-        self.todo = todoItem.todo
-        self.completed = todoItem.completed
+        self.itemDescripion = todoItem.decription
+        self.isCompleted = todoItem.isCompleted
         self.userId = Int64(todoItem.userId)
         self.date = todoItem.date
     }
@@ -20,8 +20,8 @@ extension TodoItemEntity {
     func toTodoItem() -> TodoItem {
         return TodoItem(
             id: Int(id),
-            todo: todo ?? "",
-            completed: completed,
+            decription: itemDescripion ?? "",
+            isCompleted: isCompleted,
             userId: Int(userId),
             date: Date()
         )
