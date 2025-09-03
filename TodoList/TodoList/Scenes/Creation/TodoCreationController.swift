@@ -36,7 +36,7 @@ final class TodoCreationController : UIViewController {
     private lazy var descriptionTextView: UITextView = {
         let textView = UITextView()
         textView.backgroundColor = .clear
-        textView.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        textView.font = UIFont.systemFont(ofSize: 16)
         textView.textColor = .darkThemeWhite
         textView.tintColor = .themeYellow
         textView.delegate = self
