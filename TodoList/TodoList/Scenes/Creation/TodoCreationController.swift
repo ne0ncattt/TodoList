@@ -14,8 +14,8 @@ final class TodoCreationController : UIViewController {
         case editing
     }
     
-    private var mode: Mode = .creation
-    private var itemToEdit: TodoItem?
+    var mode: Mode = .creation
+    var itemToEdit: TodoItem?
     
     enum UIConstants {
         static let horizontalOffset: CGFloat = 20
@@ -203,4 +203,17 @@ extension TodoCreationController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         validateInput()
     }
+}
+
+// for tests
+extension TodoCreationController {
+    // Для доступа в тестах
+    var testableTitleTextField: UITextField { titleTextField }
+    var testableDescriptionTextView: UITextView { descriptionTextView }
+    var testableDateLabel: UILabel { dateLabel }
+    
+    // Для вызова приватных методов в тестах
+    func testableValidateInput() { validateInput() }
+    func testableAddButtonPressed() { addButtonPressed() }
+    func testableFormatDate(_ date: Date) -> String { formatDate(date) }
 }
