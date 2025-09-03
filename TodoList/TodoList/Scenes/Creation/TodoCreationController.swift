@@ -75,7 +75,7 @@ final class TodoCreationController : UIViewController {
         dateLabel.text = formatDate(Date())
         setupUI()
         if mode == .editing, let itemToEdit {
-            titleTextField.text = itemToEdit.title
+            titleTextField.text = itemToEdit.nameToDisplay
             descriptionTextView.text = itemToEdit.decription
         }
     }
