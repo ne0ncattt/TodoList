@@ -22,11 +22,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         coloredAppearance.backgroundColor = .todosScreenBackground
         coloredAppearance.titleTextAttributes = [.foregroundColor: UIColor.darkThemeWhite]
         coloredAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.darkThemeWhite]
+        
         UINavigationBar.appearance().shadowImage = UIImage()
         UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
         UINavigationBar.appearance().standardAppearance = coloredAppearance
         UINavigationBar.appearance().scrollEdgeAppearance = coloredAppearance
         UINavigationBar.appearance().compactAppearance = coloredAppearance
+        UINavigationBar.appearance().tintColor = .themeYellow
     }
     
 }

@@ -10,11 +10,12 @@ import CoreData
 extension TodoItemEntity {
     convenience init(context: NSManagedObjectContext, todoItem: TodoItem) {
         self.init(context: context)
-        self.id = Int64(todoItem.id)
+        self.id = Int32(todoItem.id)
         self.itemDescripion = todoItem.decription
         self.isCompleted = todoItem.isCompleted
-        self.userId = Int64(todoItem.userId)
+        self.userId = Int32(todoItem.userId)
         self.date = todoItem.date
+        self.title = todoItem.title
     }
     
     func toTodoItem() -> TodoItem {
@@ -23,7 +24,8 @@ extension TodoItemEntity {
             decription: itemDescripion ?? "",
             isCompleted: isCompleted,
             userId: Int(userId),
-            date: Date()
+            title: title,
+            date: date
         )
     }
 }

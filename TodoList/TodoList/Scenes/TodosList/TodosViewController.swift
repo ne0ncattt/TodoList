@@ -73,6 +73,7 @@ final class TodosViewController: UIViewController {
         searchController.searchBar.tintColor = .themeYellow
         searchController.searchBar.backgroundImage = UIImage()
         searchController.searchBar.layer.shadowColor = UIColor.clear.cgColor
+        
         navigationController?.navigationBar.setValue(true, forKey: "hidesShadow")
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.searchController = searchController
@@ -96,6 +97,10 @@ final class TodosViewController: UIViewController {
         ])
         
         view.bringSubviewToFront(bottomPanel)
+        
+        bottomPanel.didPressCreate = { [weak self] in
+            self?.viewModel.createItem()
+        }
     }
 }
 
@@ -133,7 +138,7 @@ extension TodosViewController {
         let edit = UIAction(
             title: "Редактировать",
             image: UIImage(systemName: "square.and.pencil")) { _ in
-                
+                self.viewModel.editItem(at: indexPath.row)
             }
         
         let share = UIAction(

@@ -8,8 +8,8 @@
 import UIKit
 
 protocol TodosRouterProtocol {
-    func goToTaskEditingScreen(with item: TodoItem)
-    func goToTaskCreationScreen(with item: TodoItem)
+    func createTodoItem()
+    func editTodoItem(_ todoToEdit: TodoItem)
 }
 
 final class TodosRouter: TodosRouterProtocol {
@@ -24,8 +24,26 @@ final class TodosRouter: TodosRouterProtocol {
         
     }
     
-    func goToTaskCreationScreen(with item: TodoItem) {
-        
+    func createTodoItem() {
+        openEditingScreen()
+    }
+    
+    func editTodoItem(_ todoToEdit: TodoItem) {
+        openEditingScreen(mode: .editing, item: todoToEdit)
+    }
+    
+    func openEditingScreen(mode: TodoCreationController.Mode = .creation, item: TodoItem? = nil) {
+        let todosStorage = TodoItemsRepository()
+        let viewModel = TodoCreationViewModel(todosStorage: todosStorage, todosRouter: self)
+        let controller = TodoCreationController(viewModel: viewModel,
+                                                mode: mode,
+                                                itemToEdit: item)
+        viewModel.didFinishRoutine = { [weak self] in
+            DispatchQueue.main.async {
+                self?.viewController?.navigationController?.popViewController(animated: true)
+            }
+        }
+        viewController?.navigationController?.pushViewController(controller, animated: true)
     }
     
 }

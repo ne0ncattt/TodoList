@@ -83,7 +83,7 @@ final class TodoCell: UITableViewCell {
     
     // MARK: - Public Methods
     func configure(with todoItem: TodoItem) {
-        nameLabel.text = "Задача #\(todoItem.id)"
+        nameLabel.text = todoItem.nameToDisplay
         nameLabel.strikeThrough(todoItem.isCompleted)
         descriptionLabel.text = todoItem.decription
         descriptionLabel.textColor = todoItem.isCompleted

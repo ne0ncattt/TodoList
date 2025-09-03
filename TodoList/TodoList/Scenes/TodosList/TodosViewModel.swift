@@ -8,7 +8,7 @@
 import Foundation
 
 final class TodosViewModel : TodosViewModelProtocol {
-    
+
     private let todosStorage: TodoItemsRepositoryProtocol
     
     var didLoadNewModel : (() -> Void)?
@@ -41,12 +41,20 @@ final class TodosViewModel : TodosViewModelProtocol {
         let allTodos = todosStorage.fetchAllItems()
         itemsToDisplay = filterQuery.isEmpty
         ? allTodos
-        : allTodos.filter {
-            $0.decription
-                .lowercased()
-                .contains(filterQuery.lowercased())
-            
-            
+        : allTodos.filter { item in
+            if let title = item.title {
+                return title
+                    .lowercased()
+                    .contains(filterQuery.lowercased()) ||
+                item
+                    .decription
+                    .lowercased()
+                    .contains(filterQuery.lowercased())
+            } else {
+               return item.decription
+                    .lowercased()
+                    .contains(filterQuery.lowercased())
+            }
         }
     }
     
@@ -58,6 +66,15 @@ final class TodosViewModel : TodosViewModelProtocol {
     func deleteItem(at index: Int) {
         let itemToDelete = itemsToDisplay[index]
         todosStorage.deleteItem(by: itemToDelete.id, completion: nil)
+    }
+    
+    func createItem() {
+        todosRouter?.createTodoItem()
+    }
+    
+    func editItem(at index: Int) {
+        let itemToEdit = itemsToDisplay[index]
+        todosRouter?.editTodoItem(itemToEdit)
     }
     
 }

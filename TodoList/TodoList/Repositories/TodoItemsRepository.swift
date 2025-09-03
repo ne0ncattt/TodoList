@@ -26,7 +26,7 @@ final class TodoItemsRepository: TodoItemsRepositoryProtocol {
     
     func fetchAllItems() -> [TodoItem] {
         let request: NSFetchRequest<TodoItemEntity> = TodoItemEntity.fetchRequest()
-        request.sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]
+        request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
         
         do {
             let entities = try coreDataManager.viewContext.fetch(request)
@@ -53,7 +53,16 @@ final class TodoItemsRepository: TodoItemsRepositoryProtocol {
     
     func saveItem(_ item: TodoItem, completion: (() -> Void)?) {
         coreDataManager.performBackgroundTask { context in
-            let _ = TodoItemEntity(context: context, todoItem: item)
+            let nextID = self.coreDataManager.getNextAvailableID(for: "TodoItemEntity", in: context)
+            
+            let newItem = TodoItem(id: nextID,
+                                   decription: item.decription,
+                                   isCompleted: item.isCompleted,
+                                   userId: item.userId,
+                                   title: item.title,
+                                   date: item.date)
+            
+            let _ = TodoItemEntity(context: context, todoItem: newItem)
             self.saveContext(context) {
                 self.notifyItemsChanged()
                 completion?()
@@ -85,8 +94,9 @@ final class TodoItemsRepository: TodoItemsRepositoryProtocol {
                 if let entity = try context.fetch(request).first {
                     entity.itemDescripion = item.decription
                     entity.isCompleted = item.isCompleted
-                    entity.userId = Int64(item.userId)
-                    
+                    entity.userId = Int32(item.userId)
+                    entity.title = item.title
+                    entity.date = item.date
                     self.saveContext(context) {
                         self.notifyItemsChanged()
                         completion?()

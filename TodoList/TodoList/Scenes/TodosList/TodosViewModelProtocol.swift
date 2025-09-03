@@ -11,6 +11,8 @@ protocol TodosViewModelProtocol: AnyObject {
     var filterQuery: String { get set }
     func toggleTodoItemCompleteion(at index: Int)
     func deleteItem(at index: Int)
+    func createItem()
+    func editItem(at index: Int)
     func loadModel()
 }
 

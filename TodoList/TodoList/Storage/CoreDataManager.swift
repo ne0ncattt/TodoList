@@ -72,3 +72,30 @@ final class CoreDataManager: AnyObject, CoreDataManageable {
         persistentContainer.performBackgroundTask(block)
     }
 }
+
+extension CoreDataManager {
+    func getNextAvailableID(for entityName: String, in context: NSManagedObjectContext) -> Int {
+        let fetchRequest = NSFetchRequest<NSDictionary>(entityName: entityName)
+        fetchRequest.resultType = .dictionaryResultType
+        
+        // Создаем expression для получения максимального ID
+        let expression = NSExpression(format: "max:(id)")
+        let expressionDescription = NSExpressionDescription()
+        expressionDescription.name = "maxID"
+        expressionDescription.expression = expression
+        expressionDescription.expressionResultType = .integer32AttributeType
+        
+        fetchRequest.propertiesToFetch = [expressionDescription]
+        
+        do {
+            let results = try context.fetch(fetchRequest)
+            if let maxID = results.first?["maxID"] as? Int32 {
+                return Int(maxID) + 1
+            }
+            return 1 // Если нет записей, начинаем с 1
+        } catch {
+            print("Error getting next ID: \(error)")
+            return 1
+        }
+    }
+}

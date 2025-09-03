@@ -15,6 +15,8 @@ final class TodosBootomView: UIView {
         static let createButtonSize: CGSize = .init(width: 68, height: 44)
     }
     
+    var didPressCreate: (() -> Void)?
+    
     private lazy var panelTopDivider: UIView = {
         let divider = UIView()
         divider.backgroundColor = .todosBottomDivider
@@ -38,6 +40,7 @@ final class TodosBootomView: UIView {
                                             withConfiguration: symbolConfiguration)
         button.tintColor = .themeYellow
         button.setImage(configuredSymbolImage, for: .normal)
+        button.addTarget(self, action: #selector(didPressCreateButton), for: .touchUpInside)
         return button
     }()
     
@@ -79,5 +82,10 @@ final class TodosBootomView: UIView {
             createButton.heightAnchor.constraint(equalToConstant: UIConastants.createButtonSize.height),
             createButton.widthAnchor.constraint(equalToConstant: UIConastants.createButtonSize.width),
         ])
+    }
+    
+    @objc
+    private func didPressCreateButton() {
+        didPressCreate?()
     }
 }

@@ -13,4 +13,5 @@ protocol CoreDataManageable {
     func saveContext()
     func saveBackgroundContext(_ context: NSManagedObjectContext, completion: ((Result<Void, Error>) -> Void)?)
     func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void)
+    func getNextAvailableID(for entityName: String, in context: NSManagedObjectContext) -> Int
 }
