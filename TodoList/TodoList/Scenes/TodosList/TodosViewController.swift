@@ -101,6 +101,11 @@ final class TodosViewController: UIViewController {
         bottomPanel.didPressCreate = { [weak self] in
             self?.viewModel.createItem()
         }
+        
+        tableView.contentInset = .init(top: 0,
+                                       left: 0,
+                                       bottom: TodosBootomView.UIConastants.panelHeight,
+                                       right: 0)
     }
 }
 
